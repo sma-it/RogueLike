@@ -23,7 +23,7 @@ public class GameManager : MonoBehaviour
     public Actor Player;
     public List<Actor> Enemies = new List<Actor>();
 
-    public GameObject CreateActor(string name, Vector2 position)
+    public GameObject CreateGameObject(string name, Vector2 position)
     {
         GameObject actor = Instantiate(Resources.Load<GameObject>($"Prefabs/{name}"), new Vector3(position.x + 0.5f, position.y + 0.5f, 0), Quaternion.identity);
         actor.name = name;
@@ -33,6 +33,14 @@ public class GameManager : MonoBehaviour
     public void AddEnemy(Actor enemy)
     {
         Enemies.Add(enemy);
+    }
+
+    public void RemoveEnemy(Actor enemy)
+    {
+        if (Enemies.Contains(enemy))
+        {
+            Enemies.Remove(enemy);
+        }
     }
 
     public void StartEnemyTurn()

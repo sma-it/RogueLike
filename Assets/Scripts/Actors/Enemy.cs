@@ -1,4 +1,3 @@
-using Unity.VisualScripting;
 using UnityEngine;
 
 [RequireComponent(typeof(Actor), typeof(AStar))]
@@ -23,28 +22,37 @@ public class Enemy : MonoBehaviour
 
     public void RunAI()
     {
-        // TODO: If target is null, set target to player (from gameManager)
+        // If target is null, set target to player (from gameManager)
         if (Target == null)
         {
             Target = GameManager.Get.Player;
         }
 
-        // TODO: convert the position of the target to a gridPosition
+        // convert the position of the target to a gridPosition
         var gridPosition = MapManager.Get.FloorMap.WorldToCell(Target.transform.position);
 
         // First check if already fighting, because the FieldOfView check costs more cpu
         if (IsFighting || GetComponent<Actor>().FieldOfView.Contains(gridPosition))
         {
-            // TODO: If the enemy was not fighting, is should be fighting now
+            // If the enemy was not fighting, is should be fighting now
             if (!IsFighting)
             {
                 IsFighting = true;
             }
 
-            // TODO: call MoveAlongPath with the gridPosition
-            MoveAlongPath(gridPosition);
+            // See how far away the player is
+            float targetDistance = Vector3.Distance(transform.position, Target.transform.position);
 
+            // if close ...
+            if (targetDistance <= 1.5f)
+            {
+                // ... hit!
+                Action.Hit(GetComponent<Actor>(), Target);
+            } else
+            {
+                // call MoveAlongPath with the gridPosition
+                MoveAlongPath(gridPosition);
+            }
         }
-
     }
 }

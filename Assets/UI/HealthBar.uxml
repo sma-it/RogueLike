@@ -1,0 +1,9 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI/styles.uss?fileID=7433441132597879392&amp;guid=5907deff6974c6d44ab73930971aa414&amp;type=3#styles" />
+    <ui:VisualElement style="flex-grow: 0; height: 30px; width: 200px; flex-shrink: 0; background-color: rgb(0, 0, 0); bottom: 25px; left: 25px; position: absolute;">
+        <ui:VisualElement style="background-color: rgb(185, 0, 0); justify-content: center; align-items: center;">
+            <ui:VisualElement name="HealthBar" style="background-color: rgb(12, 176, 0); left: 0; top: 0; bottom: 0; position: absolute; width: 50%;" />
+            <ui:Label tabindex="-1" text="30/30 HP" parse-escape-sequences="true" display-tooltip-when-elided="true" name="HealthText" style="-unity-font-style: bold; color: rgb(255, 255, 255); -unity-font-definition: resource(&apos;Fonts/VIDEOPHREAK SDF&apos;); -unity-font: resource(&apos;Fonts/VIDEOPHREAK&apos;); -unity-text-align: upper-center;" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>
