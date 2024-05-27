@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class DungeonGenerator : MonoBehaviour
 {
@@ -10,6 +11,7 @@ public class DungeonGenerator : MonoBehaviour
     private int maxRooms;
     private int maxEnemies;
     private int maxItems;
+    private int currentFloor;
 
     List<Room> rooms = new List<Room>();
 
@@ -38,6 +40,11 @@ public class DungeonGenerator : MonoBehaviour
     public void SetMaxItems(int max)
     {
         maxItems = max;
+    }
+
+    public void SetFloor(int floor)
+    {
+        currentFloor = floor;
     }
 
     public void Generate()
@@ -92,7 +99,20 @@ public class DungeonGenerator : MonoBehaviour
             PlaceItems(room, maxItems);
             rooms.Add(room);
         }
-        var player = GameManager.Get.CreateGameObject("Player", rooms[0].Center());
+
+        GameManager.Get.CreateGameObject("Down", rooms[rooms.Count - 1].Center());
+        if(GameManager.Get.Player != null)
+        {
+            GameManager.Get.Player.transform.position = new Vector3(rooms[0].Center().x + 0.5f, rooms[0].Center().y + 0.5f, 0);
+        } else
+        {
+            var player = GameManager.Get.CreateGameObject("Player", rooms[0].Center());
+        }
+        
+        if(currentFloor > 0)
+        {
+            GameManager.Get.CreateGameObject("Up", rooms[0].Center());
+        }
     }
 
     private bool TrySetWallTile(Vector3Int pos)

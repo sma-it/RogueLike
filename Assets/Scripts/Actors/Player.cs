@@ -161,7 +161,7 @@ public class Player : MonoBehaviour, Controls.IPlayerActions
                     var enemies = GameManager.Get.GetNearbyEnemies(transform.position);
                     foreach (var enemy in enemies)
                     {
-                        enemy.DoDamage(8);
+                        enemy.DoDamage(8, GetComponent<Actor>());
                         UIManager.Get.AddMessage($"Your fireball damaged the {enemy.name} for 8HP", Color.magenta);
                     }
                     break;
@@ -189,7 +189,22 @@ public class Player : MonoBehaviour, Controls.IPlayerActions
         Camera.main.transform.position = new Vector3(transform.position.x, transform.position.y, -5);
     }
 
-    
+    public void OnClimb(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            var ladder = GameManager.Get.GetLadderAtLocation(transform.position);
 
-    
+            if (ladder != null)
+            {
+                if (ladder.Up)
+                {
+                    MapManager.Get.MoveUp();
+                } else
+                {
+                    MapManager.Get.MoveDown();
+                }
+            }
+        }
+    }
 }

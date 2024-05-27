@@ -16,11 +16,16 @@ public class Actor : MonoBehaviour
     [SerializeField] private int hitPoints;
     [SerializeField] private int defense;
     [SerializeField] private int power;
+    [SerializeField] private int level;
+    [SerializeField] private int xp;
+    [SerializeField] private int xpToNextLevel;
 
     public int MaxHitPoints { get => maxHitPoints; }
     public int HitPoints { get => hitPoints; }
     public int Defense { get => defense; }
     public int Power { get => power; }
+    public int Level { get => level; }
+    public int Xp { get => xp; }
 
 
     private void Start()
@@ -55,7 +60,7 @@ public class Actor : MonoBehaviour
         }
     }
 
-    public void DoDamage(int hp)
+    public void DoDamage(int hp, Actor attacker)
     {
         hitPoints -= hp;
 
@@ -66,7 +71,14 @@ public class Actor : MonoBehaviour
             UIManager.Get.UpdateHealth(hitPoints, MaxHitPoints);
         }
 
-        if (hitPoints == 0) Die();
+        if (hitPoints == 0)
+        {
+            Die();
+            if (attacker.GetComponent<Player>())
+            {
+                attacker.AddXp(xp);
+            }
+        }
     }
 
     public void Heal(int hp)
@@ -80,6 +92,25 @@ public class Actor : MonoBehaviour
         {
             UIManager.Get.UpdateHealth(hitPoints, MaxHitPoints);
             UIManager.Get.AddMessage($"You are healed for {hp} hit points.", Color.green);
+        }
+    }
+
+    public void AddXp(int xp)
+    {
+        this.xp += xp;
+        if (this.xp >= xpToNextLevel)
+        {
+            level++;
+            xpToNextLevel += (int)(xpToNextLevel * 1.2f);
+            UIManager.Get.AddMessage("You've gained a level!", Color.yellow);
+            maxHitPoints += 2;
+            defense++;
+            power++;
+        }
+        if (GetComponent<Player>())
+        {
+            UIManager.Get.UpdateXP(this.xp);
+            UIManager.Get.UpdateLevel(level);
         }
     }
 

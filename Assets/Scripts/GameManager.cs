@@ -23,6 +23,32 @@ public class GameManager : MonoBehaviour
     public Actor Player;
     public List<Actor> Enemies = new List<Actor>();
     public List<Consumable> Items = new List<Consumable>();
+    public List<Ladder> Ladders = new List<Ladder>();
+    public List<TombStone> TombStones = new List<TombStone>();
+
+    public void ClearFloor()
+    {
+        foreach(var enemy in Enemies)
+        {
+            Destroy(enemy.gameObject);
+        }
+        foreach(var item in Items)
+        {
+            Destroy(item.gameObject);
+        }
+        foreach(var ladder in Ladders)
+        {
+            Destroy(ladder.gameObject);
+        }
+        foreach(var stone in TombStones)
+        {
+            Destroy(stone.gameObject);
+        }
+        Enemies.Clear();
+        Items.Clear();
+        Ladders.Clear();
+        TombStones.Clear();
+    }
 
     public GameObject CreateGameObject(string name, Vector2 position)
     {
@@ -55,6 +81,16 @@ public class GameManager : MonoBehaviour
         {
             Enemies.Remove(enemy);
         }
+    }
+
+    public void AddLadder(Ladder ladder)
+    {
+        Ladders.Add(ladder);
+    }
+
+    public void AddTombStone(TombStone stone)
+    {
+        TombStones.Add(stone);
     }
 
     public void StartEnemyTurn()
@@ -103,6 +139,18 @@ public class GameManager : MonoBehaviour
             if (item.transform.position == location)
             {
                 return item;
+            }
+        }
+        return null;
+    }
+
+    public Ladder GetLadderAtLocation(Vector3 location)
+    {
+        foreach(var ladder in Ladders)
+        {
+            if (ladder.transform.position == location)
+            {
+                return ladder;
             }
         }
         return null;
