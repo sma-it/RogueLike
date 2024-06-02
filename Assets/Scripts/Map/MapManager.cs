@@ -80,6 +80,7 @@ public class MapManager : MonoBehaviour
         floor--;
         GameManager.Get.ClearFloor();
         GenerateDungeon();
+        UIManager.Get.Floor.SetFloor(floor);
     }
 
     public void MoveDown()
@@ -87,6 +88,7 @@ public class MapManager : MonoBehaviour
         floor++;
         GameManager.Get.ClearFloor();
         GenerateDungeon();
+        UIManager.Get.Floor.SetFloor(floor);
     }
 
     public bool InBounds(int x, int y) => 0 <= x && x < width && 0 <= y && y < height;

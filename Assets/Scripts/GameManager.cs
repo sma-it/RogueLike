@@ -73,6 +73,7 @@ public class GameManager : MonoBehaviour
     public void AddEnemy(Actor enemy)
     {
         Enemies.Add(enemy);
+        UIManager.Get.Floor.SetEnemies(Enemies.Count);
     }
 
     public void RemoveEnemy(Actor enemy)
@@ -81,6 +82,7 @@ public class GameManager : MonoBehaviour
         {
             Enemies.Remove(enemy);
         }
+        UIManager.Get.Floor.SetEnemies(Enemies.Count);
     }
 
     public void AddLadder(Ladder ladder)

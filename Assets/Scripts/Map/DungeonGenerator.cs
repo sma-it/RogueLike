@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -14,6 +16,7 @@ public class DungeonGenerator : MonoBehaviour
     private int currentFloor;
 
     List<Room> rooms = new List<Room>();
+    string[] enemies = {"Snake", "Pig", "Bee", "WereWolf", "Spider", "Ghost", "Winged Serpent", "Scorpion", "Bat", "Dragon"};
 
     public void SetSize(int width, int height)
     {
@@ -193,14 +196,11 @@ public class DungeonGenerator : MonoBehaviour
             int y = Random.Range(room.Y + 1, room.Y + room.Height - 1);
 
             // create different enemies
-            if (Random.value < 0.5f)
-            {
-                GameManager.Get.CreateGameObject("Pig", new Vector2(x, y));
-            }
-            else
-            {
-                GameManager.Get.CreateGameObject("Snake", new Vector2(x, y));
-            }
+            int minEnemyLevel = currentFloor - 3 < 0 ? 0 : currentFloor - 3;
+            int maxEnemyLevel = currentFloor + 1 > enemies.Count() ? enemies.Count() : currentFloor + 1;
+            int index = Random.Range(minEnemyLevel, maxEnemyLevel);
+
+            GameManager.Get.CreateGameObject(enemies[index], new Vector2(x, y));
         }
     }
 

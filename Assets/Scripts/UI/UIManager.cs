@@ -24,8 +24,10 @@ public class UIManager : MonoBehaviour
     public GameObject HealthBar;
     public GameObject Messages;
     [SerializeField] private GameObject InventoryUI;
+    [SerializeField] private GameObject FloorUI;
 
     public InventoryUI Inventory { get => InventoryUI.GetComponent<InventoryUI>(); }
+    public FloorInfo Floor { get => FloorUI.GetComponent<FloorInfo>(); }
 
     public void UpdateHealth(int current, int max)
     {
