@@ -119,6 +119,7 @@ public class Actor : MonoBehaviour
         if (GetComponent<Player>())
         {
             UIManager.Get.AddMessage("You died!", Color.red); //Red
+            GameManager.Get.DeleteSaveGame();
         }
         else
         {
@@ -127,5 +128,34 @@ public class Actor : MonoBehaviour
         GameManager.Get.CreateGameObject("Dead", transform.position).name = $"Remains of {name}";
         GameManager.Get.RemoveEnemy(this);
         Destroy(gameObject);
+    }
+
+    public void SetFromGameData(GameData data)
+    {
+        xp = data.XP;
+        xpToNextLevel = data.XpToNextLevel;
+        level = data.Level;
+        defense = data.Defense;
+        power = data.Power;
+        hitPoints = data.HitPoints;
+        maxHitPoints = data.MaxHitPoints;
+
+        UIManager.Get.UpdateXP(this.xp);
+        UIManager.Get.UpdateLevel(level);
+        UIManager.Get.UpdateHealth(hitPoints, MaxHitPoints);
+    }
+
+    public GameData GetGameData()
+    {
+        return new GameData
+        {
+            XP = xp,
+            XpToNextLevel = xpToNextLevel,
+            Level = level,
+            Defense = defense,
+            Power = power,
+            HitPoints = hitPoints,
+            MaxHitPoints = maxHitPoints
+        };
     }
 }

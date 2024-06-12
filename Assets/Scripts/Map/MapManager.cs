@@ -48,12 +48,11 @@ public class MapManager : MonoBehaviour
     public int maxItems = 2;
     public int floor = 0;
 
-    private void Start()
+    public void Start()
     {
         GenerateDungeon();
     }
-
-    private void GenerateDungeon()
+    public void GenerateDungeon()
     {
         Tiles = new Dictionary<Vector3Int, TileData>();
         VisibleTiles = new List<Vector3Int>();

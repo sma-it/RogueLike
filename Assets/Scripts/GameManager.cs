@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
+using Unity.IO.LowLevel.Unsafe;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -20,11 +22,46 @@ public class GameManager : MonoBehaviour
 
     public static GameManager Get { get => instance; }
 
-    public Actor Player;
+    private Actor player;
+    public Actor Player
+    {
+        get { return player; }
+        set
+        {
+            player = value;
+            var data = LoadGameData();
+            if (data != null)
+            {
+                player.SetFromGameData(data);
+                Debug.Log("previous game loaded");
+            }
+        }
+    }
+
     public List<Actor> Enemies = new List<Actor>();
     public List<Consumable> Items = new List<Consumable>();
     public List<Ladder> Ladders = new List<Ladder>();
     public List<TombStone> TombStones = new List<TombStone>();
+
+    private GameData gameData;
+    private string filePath;
+
+    private void Start()
+    {
+        filePath = Application.persistentDataPath + "/gamedata.json";
+    }
+
+    private void OnDestroy()
+    {
+        if (Player != null)
+        {
+            SaveGameData();
+            Debug.Log("Player data saved");
+        } else
+        {
+            Debug.Log("Cannot save game: no player found");
+        }
+    }
 
     public void ClearFloor()
     {
@@ -156,5 +193,31 @@ public class GameManager : MonoBehaviour
             }
         }
         return null;
+    }
+
+    public GameData LoadGameData()
+    {
+        if (File.Exists(filePath))
+        {
+            string json = File.ReadAllText(filePath);
+            var data = JsonUtility.FromJson<GameData>(json);
+            return data;
+        }
+        return null;
+    }
+
+    public void SaveGameData()
+    {
+        var data = Player.GetGameData();
+        string json = JsonUtility.ToJson(data);
+        File.WriteAllText(filePath, json);
+    }
+
+    public void DeleteSaveGame()
+    {
+        if (File.Exists(filePath))
+        {
+            File.Delete(filePath);
+        }
     }
 }
